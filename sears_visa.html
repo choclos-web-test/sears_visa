@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Descargar App Wallet Sears</title>
+  <script>
+    // Tus enlaces reales
+    const iosLink = "https://apps.apple.com/mx/app/wallet-sears/id6737367809";
+    const androidLink = "https://play.google.com/store/apps/details?id=com.americamovil.sears";
+
+    const ua = navigator.userAgent || navigator.vendor || window.opera;
+    if (/iPad|iPhone|iPod/.test(ua) && !window.MSStream) {
+      window.location.href = iosLink;
+    } else if (/android/i.test(ua)) {
+      window.location.href = androidLink;
+    } else {
+      document.write(
+        '<p>Elige tu tienda:</p>' +
+        '<a href="' + iosLink + '">App Store</a> | ' +
+        '<a href="' + androidLink + '">Google Play</a>'
+      );
+    }
+  </script>
+</head>
+<body></body>
+</html>
