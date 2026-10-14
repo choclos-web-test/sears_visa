@@ -7,28 +7,41 @@
 </head>
 <body>
   <p>Redirigiendo a la tienda correspondiente...</p>
-  <!-- Enlaces manuales por si la redirección no ocurre -->
   <p>
     <a href="https://apps.apple.com/mx/app/wallet-sears/id6737367809">App Store</a> |
     <a href="https://play.google.com/store/apps/details?id=com.evertec.wallet.sears">Google Play</a>
   </p>
 
   <script>
-    (function() {
-      const iosLink = "https://apps.apple.com/mx/app/wallet-sears/id6737367809";
-      const androidLink = "https://play.google.com/store/apps/details?id=com.evertec.wallet.sears";
+    (function () {
+      var IOS_LINK = "https://apps.apple.com/mx/app/wallet-sears/id6737367809";
+      var ANDROID_LINK = "https://play.google.com/store/apps/details?id=com.evertec.wallet.sears";
 
-      const ua = navigator.userAgent || navigator.vendor || window.opera;
-      const isIOS = /iPad|iPhone|iPod/.test(ua) ||
-                    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-      const isAndroid = /android/i.test(ua);
+      var ua = navigator.userAgent || navigator.vendor || window.opera;
+      var isIOS = /iPad|iPhone|iPod/.test(ua) ||
+                  (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+      var isAndroid = /android/i.test(ua);
 
-      if (isIOS) {
-        window.location.replace(iosLink);
-      } else if (isAndroid) {
-        window.location.replace(androidLink);
+      function goTo(url) {
+        // Intentar afectar la ventana superior (útil en WebViews / iframes)
+        try {
+          if (window.top && window.top !== window) {
+            window.top.location.href = url;
+          } else {
+            window.location.href = url;
+          }
+        } catch (e) {
+          // Fallback si hay restricciones cross-origin
+          window.location.href = url;
+        }
       }
-      // Si no es ninguno, se muestran los enlaces manuales que ya están en el body.
+
+      // Pequeño delay para que Safari procese el evento
+      if (isIOS) {
+        setTimeout(function () { goTo(IOS_LINK); }, 50);
+      } else if (isAndroid) {
+        setTimeout(function () { goTo(ANDROID_LINK); }, 50);
+      }
     })();
   </script>
 </body>
