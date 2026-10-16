@@ -1,38 +1,26 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-F5HDR051LC"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-F5HDR051LC');
-</script>
-  
   <meta charset="UTF-8">
-    gtag('js', new Date());
-  </script>
-  <p>Redirigiendo a la tienda correspondiente...</p>
-    gtag('config', 'G-F5HDR051LC', {
-      'page_location': window.location.href 
-<body>
-<head>
-  <title>Descargar App Wallet Sears</title>
-<html lang="es">
-  <!-- 1. Google Analytics 4 (Reemplaza G-XXXXXXXXXX con tu ID real) -->
-<!DOCTYPE html>
-  <script>
-    function gtag(){dataLayer.push(arguments);}
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    // 'page_location' captura automáticamente los parámetros UTM de la URL
-</head>
-  <p>
-      'page_title': 'Landing Descarga Wallet Sears',
-    });
+  <title>Descargar App Wallet Sears</title>
   
-    <!-- 2. Enlaces con rastreo de clics manuales (ideal para usuarios de PC o si falla el auto-redirect) -->
+  <!-- 1. Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-F5HDR051LC"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-F5HDR051LC', {
+      'page_title': 'Landing Descarga Wallet Sears',
+      'page_location': window.location.href 
+    });
+  </script>
+</head>
+<body>
+  <p>Redirigiendo a la tienda correspondiente...</p>
+  <p>
+    <!-- 2. Enlaces con rastreo de clics manuales (para PC o si falla el auto-redirect) -->
     <a href="https://apps.apple.com/mx/app/wallet-sears/id6737367809" 
        onclick="gtag('event', 'clic_manual', {'event_category': 'descarga', 'event_label': 'App Store'});"
        target="_blank" rel="noopener noreferrer">App Store</a> |
@@ -42,6 +30,7 @@
        target="_blank" rel="noopener noreferrer">Google Play</a>
   </p>
 
+  <!-- 3. Script de redirección automática por dispositivo -->
   <script>
     (function () {
       var IOS_LINK = "https://apps.apple.com/mx/app/wallet-sears/id6737367809";
@@ -52,7 +41,7 @@
       var isAndroid = /android/i.test(ua);
 
       function goTo(url, deviceType) {
-        // Registrar el evento de redirección automática antes de salir
+        // Registrar el evento antes de salir
         if (typeof gtag !== 'undefined') {
           gtag('event', 'redireccion_automatica', {
             'event_category': 'navegacion',
@@ -71,13 +60,12 @@
         }
       }
 
-      // Aumentamos el delay a 150ms para asegurar que GA4 tenga tiempo de registrar la visita antes de redirigir
+      // Delay de 150ms para asegurar que GA4 registre la visita
       if (isIOS) {
         setTimeout(function () { goTo(IOS_LINK, 'iOS'); }, 150);
       } else if (isAndroid) {
         setTimeout(function () { goTo(ANDROID_LINK, 'Android'); }, 150);
       }
-      // Si es PC, no hace nada y el usuario ve los enlaces para hacer clic manualmente.
     })();
   </script>
 </body>
