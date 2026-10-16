@@ -12,14 +12,34 @@
 </script>
   
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Descargar App Wallet Sears</title>
-</head>
-<body>
+    gtag('js', new Date());
+  </script>
   <p>Redirigiendo a la tienda correspondiente...</p>
+    gtag('config', 'G-XXXXXXXXXX', {
+      'page_location': window.location.href 
+<body>
+<head>
+  <title>Descargar App Wallet Sears</title>
+<html lang="es">
+  <!-- 1. Google Analytics 4 (Reemplaza G-XXXXXXXXXX con tu ID real) -->
+<!DOCTYPE html>
+  <script>
+    function gtag(){dataLayer.push(arguments);}
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    // 'page_location' captura automáticamente los parámetros UTM de la URL
+</head>
   <p>
-    <a href="https://apps.apple.com/mx/app/wallet-sears/id6737367809">App Store</a> |
-    <a href="https://play.google.com/store/apps/details?id=com.evertec.wallet.sears">Google Play</a>
+      'page_title': 'Landing Descarga Wallet Sears',
+    });
+  
+    <!-- 2. Enlaces con rastreo de clics manuales (ideal para usuarios de PC o si falla el auto-redirect) -->
+    <a href="https://apps.apple.com/mx/app/wallet-sears/id6737367809" 
+       onclick="gtag('event', 'clic_manual', {'event_category': 'descarga', 'event_label': 'App Store'});"
+       target="_blank" rel="noopener noreferrer">App Store</a> |
+       
+    <a href="https://play.google.com/store/apps/details?id=com.evertec.wallet.sears" 
+       onclick="gtag('event', 'clic_manual', {'event_category': 'descarga', 'event_label': 'Google Play'});"
+       target="_blank" rel="noopener noreferrer">Google Play</a>
   </p>
 
   <script>
@@ -28,12 +48,18 @@
       var ANDROID_LINK = "https://play.google.com/store/apps/details?id=com.evertec.wallet.sears";
 
       var ua = navigator.userAgent || navigator.vendor || window.opera;
-      var isIOS = /iPad|iPhone|iPod/.test(ua) ||
-                  (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+      var isIOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
       var isAndroid = /android/i.test(ua);
 
-      function goTo(url) {
-        // Intentar afectar la ventana superior (útil en WebViews / iframes)
+      function goTo(url, deviceType) {
+        // Registrar el evento de redirección automática antes de salir
+        if (typeof gtag !== 'undefined') {
+          gtag('event', 'redireccion_automatica', {
+            'event_category': 'navegacion',
+            'event_label': deviceType
+          });
+        }
+        
         try {
           if (window.top && window.top !== window) {
             window.top.location.href = url;
@@ -41,17 +67,17 @@
             window.location.href = url;
           }
         } catch (e) {
-          // Fallback si hay restricciones cross-origin
           window.location.href = url;
         }
       }
 
-      // Pequeño delay para que Safari procese el evento
+      // Aumentamos el delay a 150ms para asegurar que GA4 tenga tiempo de registrar la visita antes de redirigir
       if (isIOS) {
-        setTimeout(function () { goTo(IOS_LINK); }, 50);
+        setTimeout(function () { goTo(IOS_LINK, 'iOS'); }, 150);
       } else if (isAndroid) {
-        setTimeout(function () { goTo(ANDROID_LINK); }, 50);
+        setTimeout(function () { goTo(ANDROID_LINK, 'Android'); }, 150);
       }
+      // Si es PC, no hace nada y el usuario ve los enlaces para hacer clic manualmente.
     })();
   </script>
 </body>
