@@ -18,9 +18,9 @@
   </script>
 </head>
 <body>
-  <p>Redirigiendo a la tienda correspondiente...</p>
+  <p id="status">Redirigiendo a la tienda correspondiente...</p>
   <p>
-    <!-- 2. Enlaces con rastreo de clics manuales (para PC o si falla el auto-redirect) -->
+    <!-- 2. Enlaces con rastreo de clics manuales -->
     <a href="https://apps.apple.com/mx/app/wallet-sears/id6737367809" 
        onclick="gtag('event', 'clic_manual', {'event_category': 'descarga', 'event_label': 'App Store'});"
        target="_blank" rel="noopener noreferrer">App Store</a> |
@@ -30,7 +30,7 @@
        target="_blank" rel="noopener noreferrer">Google Play</a>
   </p>
 
-  <!-- 3. Script de redirección automática por dispositivo -->
+  <!-- 3. Script de redirección optimizado para móviles -->
   <script>
     (function () {
       var IOS_LINK = "https://apps.apple.com/mx/app/wallet-sears/id6737367809";
@@ -41,30 +41,28 @@
       var isAndroid = /android/i.test(ua);
 
       function goTo(url, deviceType) {
-        // Registrar el evento antes de salir
+        // 1. Registrar el evento con 'beacon' para garantizar el envío en móviles
         if (typeof gtag !== 'undefined') {
           gtag('event', 'redireccion_automatica', {
             'event_category': 'navegacion',
-            'event_label': deviceType
+            'event_label': deviceType,
+            'transport_type': 'beacon' 
           });
         }
         
-        try {
-          if (window.top && window.top !== window) {
-            window.top.location.href = url;
-          } else {
-            window.location.href = url;
-          }
-        } catch (e) {
-          window.location.href = url;
-        }
+        // 2. Feedback visual para confirmar que el script funcionó
+        document.getElementById('status').innerText = "Dispositivo " + deviceType + " detectado. Redirigiendo...";
+
+        // 3. Redirección limpia (300ms es más seguro en redes móviles)
+        setTimeout(function() {
+          window.location.replace(url);
+        }, 300);
       }
 
-      // Delay de 150ms para asegurar que GA4 registre la visita
       if (isIOS) {
-        setTimeout(function () { goTo(IOS_LINK, 'iOS'); }, 150);
+        goTo(IOS_LINK, 'iOS');
       } else if (isAndroid) {
-        setTimeout(function () { goTo(ANDROID_LINK, 'Android'); }, 150);
+        goTo(ANDROID_LINK, 'Android');
       }
     })();
   </script>
