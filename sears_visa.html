@@ -13,7 +13,7 @@
     gtag('js', new Date());
     gtag('config', 'G-F5HDR051LC', {
       'page_title': 'Landing Link Inteligente Wallet Sears',
-      'page_location': window.location.href // Esto captura tus UTM automáticamente
+      'page_location': window.location.href
     });
   </script>
 </head>
@@ -22,23 +22,52 @@
   <p id="status" style="text-align: center; font-family: sans-serif; color: #555;">Analizando tu dispositivo...</p>
   
   <div style="text-align: center; margin-top: 30px;">
-    <!-- 2. Enlaces manuales (Solo visibles/útiles en PC o si falla el móvil) -->
     <p>Si la descarga no inicia automáticamente, selecciona tu tienda:</p>
+    
     <a href="https://apps.apple.com/mx/app/wallet-sears/id6737367809" 
-       onclick="gtag('event', 'clic_manual', {'event_category': 'descarga', 'event_label': 'App Store', 'transport_type': 'beacon'});"
-       style="padding: 10px 20px; background-color: #007aff; color: white; text-decoration: none; border-radius: 5px; font-family: sans-serif;"
+       onclick="registrarClicManual('App Store');"
+       style="display: inline-block; padding: 12px 24px; background-color: #007aff; color: white; text-decoration: none; border-radius: 8px; font-family: sans-serif; font-weight: bold; margin: 5px;"
        target="_blank" rel="noopener noreferrer">📱 Descargar en App Store</a>
        
-    <br><br>
+    <br>
     
     <a href="https://play.google.com/store/apps/details?id=com.evertec.wallet.sears" 
-       onclick="gtag('event', 'clic_manual', {'event_category': 'descarga', 'event_label': 'Google Play', 'transport_type': 'beacon'});"
-       style="padding: 10px 20px; background-color: #34a853; color: white; text-decoration: none; border-radius: 5px; font-family: sans-serif;"
+       onclick="registrarClicManual('Google Play');"
+       style="display: inline-block; padding: 12px 24px; background-color: #34a853; color: white; text-decoration: none; border-radius: 8px; font-family: sans-serif; font-weight: bold; margin: 5px;"
        target="_blank" rel="noopener noreferrer">🤖 Descargar en Google Play</a>
   </div>
 
-  <!-- 3. Lógica del Link Inteligente -->
+  <!-- 2. Lógica del Link Inteligente + Extracción de UTM -->
   <script>
+    // Función para extraer los parámetros UTM de la URL
+    function obtenerUTMs() {
+      const params = new URLSearchParams(window.location.search);
+      return {
+        utm_source: params.get('utm_source') || '(directo)',
+        utm_medium: params.get('utm_medium') || '(ninguno)',
+        utm_campaign: params.get('utm_campaign') || '(no establecida)',
+        utm_content: params.get('utm_content') || '(no establecido)',
+        utm_term: params.get('utm_term') || '(no establecido)'
+      };
+    }
+
+    const utms = obtenerUTMs();
+
+    // Función para registrar clics manuales (PC o fallback)
+    function registrarClicManual(tienda) {
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'clic_manual', {
+          'event_category': 'descarga',
+          'event_label': tienda,
+          'utm_source': utms.utm_source,
+          'utm_campaign': utms.utm_campaign,
+          'utm_content': utms.utm_content,
+          'transport_type': 'beacon'
+        });
+      }
+    }
+
+    // Lógica de redirección automática
     (function () {
       var IOS_LINK = "https://apps.apple.com/mx/app/wallet-sears/id6737367809";
       var ANDROID_LINK = "https://play.google.com/store/apps/details?id=com.evertec.wallet.sears";
@@ -48,33 +77,31 @@
       var isAndroid = /android/i.test(ua);
 
       function goTo(url, deviceType) {
-        // MEDICIÓN: Enviamos el evento con 'beacon' para garantizar que llegue aunque la página se cierre
         if (typeof gtag !== 'undefined') {
           gtag('event', 'redireccion_automatica', {
             'event_category': 'link_inteligente',
             'event_label': deviceType,
+            'utm_source': utms.utm_source,
+            'utm_campaign': utms.utm_campaign,
+            'utm_content': utms.utm_content,
             'transport_type': 'beacon'
           });
         }
         
-        // FEEDBACK VISUAL: Para que sepas que el código funcionó
         document.getElementById('status').innerText = "✅ Dispositivo " + deviceType + " detectado. Redirigiendo a la tienda...";
         document.getElementById('status').style.color = "#28a745";
         document.getElementById('status').style.fontWeight = "bold";
 
-        // REDIRECCIÓN: 400ms es el tiempo perfecto para que GA4 registre el evento en redes móviles
         setTimeout(function() {
           window.location.replace(url);
         }, 400);
       }
 
-      // EJECUCIÓN: Solo actúa si es móvil. Si es PC, no hace nada y el usuario ve los botones.
       if (isIOS) {
         goTo(IOS_LINK, 'iOS');
       } else if (isAndroid) {
         goTo(ANDROID_LINK, 'Android');
       } else {
-        // Si es PC, cambiamos el mensaje para invitar al clic manual
         document.getElementById('status').innerText = "💻 Estás en una computadora. Selecciona tu tienda preferida abajo.";
       }
     })();
