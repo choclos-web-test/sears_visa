@@ -12,25 +12,32 @@
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'G-F5HDR051LC', {
-      'page_title': 'Landing Descarga Wallet Sears',
-      'page_location': window.location.href 
+      'page_title': 'Landing Link Inteligente Wallet Sears',
+      'page_location': window.location.href // Esto captura tus UTM automáticamente
     });
   </script>
 </head>
 <body>
-  <p id="status">Redirigiendo a la tienda correspondiente...</p>
-  <p>
-    <!-- 2. Enlaces con rastreo de clics manuales -->
+  <h2 style="text-align: center; font-family: sans-serif;">Descargar App Wallet Sears</h2>
+  <p id="status" style="text-align: center; font-family: sans-serif; color: #555;">Analizando tu dispositivo...</p>
+  
+  <div style="text-align: center; margin-top: 30px;">
+    <!-- 2. Enlaces manuales (Solo visibles/útiles en PC o si falla el móvil) -->
+    <p>Si la descarga no inicia automáticamente, selecciona tu tienda:</p>
     <a href="https://apps.apple.com/mx/app/wallet-sears/id6737367809" 
-       onclick="gtag('event', 'clic_manual', {'event_category': 'descarga', 'event_label': 'App Store'});"
-       target="_blank" rel="noopener noreferrer">App Store</a> |
+       onclick="gtag('event', 'clic_manual', {'event_category': 'descarga', 'event_label': 'App Store', 'transport_type': 'beacon'});"
+       style="padding: 10px 20px; background-color: #007aff; color: white; text-decoration: none; border-radius: 5px; font-family: sans-serif;"
+       target="_blank" rel="noopener noreferrer">📱 Descargar en App Store</a>
        
+    <br><br>
+    
     <a href="https://play.google.com/store/apps/details?id=com.evertec.wallet.sears" 
-       onclick="gtag('event', 'clic_manual', {'event_category': 'descarga', 'event_label': 'Google Play'});"
-       target="_blank" rel="noopener noreferrer">Google Play</a>
-  </p>
+       onclick="gtag('event', 'clic_manual', {'event_category': 'descarga', 'event_label': 'Google Play', 'transport_type': 'beacon'});"
+       style="padding: 10px 20px; background-color: #34a853; color: white; text-decoration: none; border-radius: 5px; font-family: sans-serif;"
+       target="_blank" rel="noopener noreferrer">🤖 Descargar en Google Play</a>
+  </div>
 
-  <!-- 3. Script de redirección optimizado para móviles -->
+  <!-- 3. Lógica del Link Inteligente -->
   <script>
     (function () {
       var IOS_LINK = "https://apps.apple.com/mx/app/wallet-sears/id6737367809";
@@ -41,28 +48,34 @@
       var isAndroid = /android/i.test(ua);
 
       function goTo(url, deviceType) {
-        // 1. Registrar el evento con 'beacon' para garantizar el envío en móviles
+        // MEDICIÓN: Enviamos el evento con 'beacon' para garantizar que llegue aunque la página se cierre
         if (typeof gtag !== 'undefined') {
           gtag('event', 'redireccion_automatica', {
-            'event_category': 'navegacion',
+            'event_category': 'link_inteligente',
             'event_label': deviceType,
-            'transport_type': 'beacon' 
+            'transport_type': 'beacon'
           });
         }
         
-        // 2. Feedback visual para confirmar que el script funcionó
-        document.getElementById('status').innerText = "Dispositivo " + deviceType + " detectado. Redirigiendo...";
+        // FEEDBACK VISUAL: Para que sepas que el código funcionó
+        document.getElementById('status').innerText = "✅ Dispositivo " + deviceType + " detectado. Redirigiendo a la tienda...";
+        document.getElementById('status').style.color = "#28a745";
+        document.getElementById('status').style.fontWeight = "bold";
 
-        // 3. Redirección limpia (300ms es más seguro en redes móviles)
+        // REDIRECCIÓN: 400ms es el tiempo perfecto para que GA4 registre el evento en redes móviles
         setTimeout(function() {
           window.location.replace(url);
-        }, 300);
+        }, 400);
       }
 
+      // EJECUCIÓN: Solo actúa si es móvil. Si es PC, no hace nada y el usuario ve los botones.
       if (isIOS) {
         goTo(IOS_LINK, 'iOS');
       } else if (isAndroid) {
         goTo(ANDROID_LINK, 'Android');
+      } else {
+        // Si es PC, cambiamos el mensaje para invitar al clic manual
+        document.getElementById('status').innerText = "💻 Estás en una computadora. Selecciona tu tienda preferida abajo.";
       }
     })();
   </script>
